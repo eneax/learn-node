@@ -1,0 +1,27 @@
+//- we add some data to the main layout
+extends layout
+
+//- it will replace the default header with 'Yo'
+//- block header
+//-   h1 Yo
+
+//- we extend the layout.pug and we add some content to the 'block content'
+block content
+  p Hello
+
+
+
+
+
+
+
+//- you can omit div and write just the class --> .wrapper
+//- div.wrapper.ops
+//-   - const upDog = dog.toUpperCase()
+//-   p.hello Hello, my dog's name is #{upDog}
+//-   img.dogClass(src='dog.jpg' alt=`Dog ${dog}`)
+
+//- h2 
+//-   | Hello 
+//-   em How are you?
+  //- without the '|' it will create a <hello> tag

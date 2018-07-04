@@ -7,7 +7,11 @@ router.get('/', (req, res) => {
   // res.send('Hey! It works!');
   // res.json(wes);
   // res.send(req.query.name);
-  res.json(req.query);
+  // res.json(req.query);
+  res.render('hello', {
+    name: 'Wes',
+    dog: req.query.dogName
+  }); // in order to get info to the pug template, we use local variables (locals) which pass an obj to 'render' 
 });
 
 router.get('/reverse/:name', (req, res) => {
@@ -24,4 +28,6 @@ req --> it's an obj full of info that is coming in
 res --> it's an obj full of methods that is sending data back to the user
 
 next --> it's a middleware (it passes data to somebody else to handle)
+
+res.render('name_of_template_to_render', 'some_local_variable')
 */ 
