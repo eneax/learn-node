@@ -1,6 +1,6 @@
 ## What is this?
 
-Just you wait folks!
+Learn to build apps with Node.js, Express, MongoDB, and friends.
 
 ## Sample Data
 
