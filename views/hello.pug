@@ -7,7 +7,7 @@ extends layout
 
 //- we extend the layout.pug and we add some content to the 'block content'
 block content
-  p Hello
+  h2 Sale ends #{h.moment().endOf('day').fromNow()}
 
 
 

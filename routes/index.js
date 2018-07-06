@@ -10,7 +10,8 @@ router.get('/', (req, res) => {
   // res.json(req.query);
   res.render('hello', {
     name: 'Wes',
-    dog: req.query.dogName
+    dog: req.query.dogName,
+    title: 'I love food'
   }); // in order to get info to the pug template, we use local variables (locals) which pass an obj to 'render' 
 });
 
