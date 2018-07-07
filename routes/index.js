@@ -2,15 +2,21 @@ const express = require('express');
 const router = express.Router();
 const storeController = require('../controllers/storeController');
 
-// Do work here
-router.get('/', storeController.homePage); // we use the homePage method that we created inside storeController
-
-router.get('/reverse/:name', (req, res) => {
-  const reverse = [...req.params.name].reverse().join('');
-  res.send(reverse);
-});
+router.get('/', storeController.myMiddleware, storeController.homePage); // we use the homePage method that we created inside storeController
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -19,7 +25,7 @@ module.exports = router;
 
 * res --> it's an obj full of methods that is sending data back to the user
 
-* next --> it's a middleware (it passes data to somebody else to handle)
+* next --> it's a middleware (it passes data to somebody else to handle...it's always after 'req' and before 'res')
 
 res.render('name_of_template_to_render', 'some_local_variable')
 
@@ -36,6 +42,11 @@ router.get('/', (req, res) => {
     dog: req.query.dogName,
     title: 'I love food'
   });
+});
+
+router.get('/reverse/:name', (req, res) => {
+  const reverse = [...req.params.name].reverse().join('');
+  res.send(reverse);
 });
 
 
