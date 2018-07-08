@@ -19,6 +19,8 @@ mongoose.connection.on('error', (err) => {
 
 // READY?! Let's go!
 
+// import all of our models --> once you import them, mongo will know about them across all the application
+require('./models/Store');
 
 // Start our app!
 const app = require('./app');
