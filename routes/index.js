@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const storeController = require('../controllers/storeController');
+const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', storeController.homePage); // we use the homePage method that we created inside storeController
+router.get('/', storeController.homePage);
 router.get('/add', storeController.addStore);
-router.post('/add', storeController.createStore);
+router.post('/add', catchErrors(storeController.createStore));
 
 module.exports = router;
 
@@ -22,6 +23,10 @@ module.exports = router;
 
 
 /*
+
+* catchErrors --> we use this handle error function, instead of 'try'...'catch'
+
+we use the homePage method that we created inside storeController
 
 * req --> it's an obj full of info that is coming in
 
