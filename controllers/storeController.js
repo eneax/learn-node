@@ -11,9 +11,9 @@ exports.addStore = (req, res) => {
 };
 
 exports.createStore = async (req, res) => {
-  const store = new Store(req.body);
-  await store.save(); // in order to sva 'store' in the database
-  res.redirect('/'); // it happens after we are done with async, await, catch errors
+  const store = await (new Store(req.body)).save();
+  req.flash('success', `Successfully Created ${store.name}. Care to leave a review?`);
+  res.redirect(`/store/${store.slug}`); // it happens after we are done with async, await, catch errors
 };
 
 
@@ -35,5 +35,7 @@ exports.myMiddleware = (req, res, next) => {
 * req.body --> it will contain all the info that has been sent by the user
 
 * await --> we don't move to the next line until we are done with the current one
+
+* flash() --> it takes 2 things: type of flash (success, error, warning, info) and message to display
 
 */ 
