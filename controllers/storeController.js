@@ -16,7 +16,11 @@ exports.createStore = async (req, res) => {
   res.redirect(`/store/${store.slug}`); // it happens after we are done with async, await, catch errors
 };
 
-
+exports.getStores = async (req, res) => {
+  //TODO 1. Query the db for a list of all stores
+  const stores = await Store.find();
+  res.render('stores', {title: 'Stores', stores: stores});
+}
 
 
 
