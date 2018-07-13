@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Store = mongoose.model('Store');
 
 exports.homePage = (req, res) => {
-  console.log(req.name);
   res.render('index'); // we render the index.pug template from the views directory
 };
 
@@ -17,13 +16,29 @@ exports.createStore = async (req, res) => {
 };
 
 exports.getStores = async (req, res) => {
-  //TODO 1. Query the db for a list of all stores
+  // 1. Query the db for a list of all stores
   const stores = await Store.find();
   res.render('stores', {title: 'Stores', stores: stores});
 }
 
+exports.editStore = async (req, res) => {
+  //1. Find the store given the id
+  const store = await Store.findOne({ _id: req.params.id});
+  //TODO 2. Confirm they are the owner of the store
+  //3. Render out the edit form, so the user can update their store
+  res.render('editStore', { title: `Edit ${store.name}`,  store: store });
+}
 
-
+exports.updateStore = async (req, res) => {
+  // find and update the store
+  const store = await Store.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true, // return the new store instead of the new one 
+    runValidators: true
+  }).exec();
+  req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View Store →</a>`);
+  // Redirect them to the store and tell them that it worked
+  res.redirect(`/stores/${store._id}/edit`);
+}
 
 
 
@@ -37,6 +52,8 @@ exports.myMiddleware = (req, res, next) => {
 }
 
 * req.body --> it will contain all the info that has been sent by the user
+
+* async --> every time you have to deal with the db, it's better to use async
 
 * await --> we don't move to the next line until we are done with the current one
 
