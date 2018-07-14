@@ -4,6 +4,13 @@ mixin storeForm(store = {})
     input(type="text" name="name" value=store.name)
     label(for="description") Description
     textarea(name="description")= store.description
+    //- address, long and lat
+    label(for="address") Address
+    input(type="text" id="address" name="location[address]" value=(store.location && store.location.address))
+    label(for="lng") Address Lng
+    input(type="text" id="lng" name="location[coordinates][0]" value=(store.location && store.location.coordinates[0]) required)
+    label(for="lat") Address Lat
+    input(type="text" id="lat" name="location[coordinates][1]" value=(store.location && store.location.coordinates[1]) required)
     - const choices = ['Wifi', 'Open Late', 'Family Friendly', 'Vegatarian', 'Licensed']
     - const tags = store.tags || []
     ul.tags
@@ -19,3 +26,5 @@ mixin storeForm(store = {})
 //- enctype="multipart/form-data" --> because we are accepting data
 //- label(for=choice)= choice ----> just like label(for=choice) #{choice}
 //- id, value and for don't have "" because choice is a variable
+
+//- (store.location && store.location.address)) --> checks if store.location exists and if true returns the address
