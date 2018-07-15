@@ -113,6 +113,46 @@ __webpack_require__(1);
 
 var _bling = __webpack_require__(0);
 
+var _autocomplete = __webpack_require__(4);
+
+var _autocomplete2 = _interopRequireDefault(_autocomplete);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _autocomplete2.default)((0, _bling.$)('#address'), (0, _bling.$)('#lat'), (0, _bling.$)('#lng')); // it allows us to use $('') instead of document.querySelector()
+
+/***/ }),
+/* 3 */,
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function autocomplete(input, latInput, lngInput) {
+  if (!input) return; // if there is no input, stop the function from running
+
+  var dropdown = new google.maps.places.Autocomplete(input);
+
+  dropdown.addListener('place_changed', function () {
+    var place = dropdown.getPlace();
+    latInput.value = place.geometry.location.lat();
+    lngInput.value = place.geometry.location.lng();
+  });
+
+  // if someone hit enter on the address field, don't submit the form
+  input.on('keydown', function (e) {
+    if (e.keycode === 13) {
+      e.preventDefault();
+    }
+  });
+}
+
+exports.default = autocomplete;
+
 /***/ })
 /******/ ]);
 //# sourceMappingURL=App.bundle.js.map
