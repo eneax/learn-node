@@ -1,8 +1,8 @@
-# Work in Progress `¯\_(ツ)_/¯`
+![Learn Node](/nodejs.jpg)
 
-## What is this?
+# Learn Node
 
-Learn to build apps with Node.js, Express, MongoDB, and friends.
+This repo contains the project for the [Learn Node](https://learnnode.com) course by [Wes Bos](https://github.com/wesbos).
 
 ## Sample Data
 
@@ -25,5 +25,3 @@ That will populate 16 stores with 3 authors and 41 reviews. The logins for the a
 |Wes Bos|wes@example.com|wes|
 |Debbie Downer|debbie@example.com|debbie|
 |Beau|beau@example.com|beau|
-
-
