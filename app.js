@@ -16,7 +16,7 @@ const errorHandlers = require('./handlers/errorHandlers');
 // create our Express app
 const app = express();
 
-// view engine setup ('views' folder contains all the pug templates)
+// view engine setup
 app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
 app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
 
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // * i.e. allows us to use inputs with nested data
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator());
