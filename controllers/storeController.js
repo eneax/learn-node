@@ -11,7 +11,14 @@ exports.addStore = (req, res) => {
 };
 
 exports.createStore = async (req, res) => {
-  const store = new Store(req.body);
-  await store.save();
-  res.redirect('/');
+  const store = await (new Store(req.body)).save();
+  req.flash('success', `Successfully created ${store.name}. Care to leave a review?`);
+  res.redirect(`/store/${store.slug}`);
 };
+
+
+
+/* 
+  - await the thing that return a promise
+  - it means, wait for me to save the store first and then move on
+*/
