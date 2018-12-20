@@ -16,9 +16,15 @@ exports.createStore = async (req, res) => {
   res.redirect(`/store/${store.slug}`);
 };
 
+exports.getStores = async (req, res) => {
+  // 1. Query the database for a list of all stores
+  const stores = await Store.find();
+  console.log(stores);
+  res.render('stores', { title: 'Stores', stores: stores });
+};
 
 
 /* 
-  - await the thing that return a promise
-  - it means, wait for me to save the store first and then move on
+  - await the thing that returns a promise
+  - it means, wait for me to save the store first and then flash and redirect
 */

@@ -1,0 +1,17 @@
+extends layout
+
+include mixins/_storeCard
+
+block content
+  .inner
+    h2= title
+    .stores
+      each store in stores
+        +storeCard(store)
+
+
+
+
+
+
+//- pre= h.dump(stores) --> dump data into the page
