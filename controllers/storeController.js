@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 const Store = mongoose.model('Store');
+const multer = require('multer');
+
+// Check if the user uploads a picture
+const multerOptions = {
+  storage: multer.memoryStorage(),
+  fileFilter(req, file, next) {
+    const isPhoto = file.mimetype.startsWith('image/');
+    if (isPhoto) {
+      next(null, true); // continue with the file uploading if it's a photo
+    }
+    else {
+      next({ message: "That file type isn't allowed!"}, false);
+    }
+  }
+};
 
 exports.homePage = (req, res) => {
   console.log(req.name);
@@ -9,6 +24,9 @@ exports.homePage = (req, res) => {
 exports.addStore = (req, res) => {
   res.render('editStore', { title: 'Add Store' });
 };
+
+// uploads file to memory
+exports.upload = multer(multerOptions).single('photo');
 
 exports.createStore = async (req, res) => {
   const store = await (new Store(req.body)).save();
