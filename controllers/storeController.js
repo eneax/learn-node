@@ -82,7 +82,20 @@ exports.updateStore = async (req, res) => {
   res.redirect(`/stores/${store._id}/edit`);
 };
 
+exports.getStoreBySlug = async (req, res, next) => {
+  const store = await Store.findOne({ slug: req.params.slug });
+  if (!store) return next();
+
+  // render store
+  res.render('store', { store: store, title: store.name });
+};
+
+
+
+
+
 /* 
+  - async -> each time you have to query the db
   - await the thing that returns a promise
   - it means, wait for me to save the store first and then flash and redirect
 */
