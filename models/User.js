@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// eslint-disable-next-line prefer-destructuring
 const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
@@ -18,11 +19,13 @@ const userSchema = new Schema({
   name: {
     type: String,
     required: 'Please supply a name',
-    trim: true
-  }
+    trim: true,
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
-userSchema.virtual('gravatar').get(function() {
+userSchema.virtual('gravatar').get(function () {
   const hash = md5(this.email);
   return `https://gravatar.com/avatar/${hash}?s=200`;
 });
