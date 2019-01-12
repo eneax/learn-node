@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Store = mongoose.model('Store');
 const multer = require('multer');
 const jimp = require('jimp');
@@ -11,11 +12,10 @@ const multerOptions = {
     const isPhoto = file.mimetype.startsWith('image/');
     if (isPhoto) {
       next(null, true); // continue with the file uploading if it's a photo
-    }
-    else {
+    } else {
       next({ message: "That file type isn't allowed!"}, false);
     }
-  }
+  },
 };
 
 exports.homePage = (req, res) => {
@@ -45,7 +45,7 @@ exports.resize = async (req, res, next) => {
   await photo.write(`./public/uploads/${req.body.photo}`);
   // once we have written our photo to the filesystem, keep going!
   next();
-}
+};
 
 exports.createStore = async (req, res) => {
   req.body.author = req.user._id;
@@ -99,7 +99,7 @@ exports.getStoreBySlug = async (req, res, next) => {
 
 exports.getStoresByTag = async (req, res) => {
   const tag = req.params.tag;
-  const tagQuery = tag || { $exists: true } // if there is no tag selected, show me all stores that contain a tag
+  const tagQuery = tag || { $exists: true }; // if there is no tag selected, show me all stores that contain a tag
   const tagsPromise = Store.getTagsList();
   const storesPromise = Store.find({ tags: tagQuery });
   const [ tags, stores ] = await Promise.all([tagsPromise, storesPromise]);
@@ -107,12 +107,29 @@ exports.getStoresByTag = async (req, res) => {
   res.render('tag', { tags: tags, title: 'Tags', tag, stores });
 };
 
+exports.searchStore = async (req, res) => {
+  const stores = await Store
+    // first find stores that match
+    .find({
+      $text: {
+        $search: req.query.q,
+      },
+    }, {
+      score: { $meta: 'textScore' },
+    })
+    // then sort them
+    .sort({
+      score: { $meta: 'textScore' },
+    })
+    // limit to only 5 results
+    .limit(5);
+  res.json(stores);
+};
 
+/*
 
-
-
-/* 
   - async -> each time you have to query the db
   - await the thing that returns a promise
   - it means, wait for me to save the store first and then flash and redirect
+
 */

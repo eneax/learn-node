@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;    // so we can use async-await
+
+mongoose.Promise = global.Promise; // so we can use async-await
 const slug = require('slugs');
 
 const storeSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: 'Please enter a store name!'
+    required: 'Please enter a store name!',
   },
   slug: String,
   description: {
     type: String,
-    trim: true
+    trim: true,
   },
   tags: [String],
   created: {
@@ -40,17 +41,23 @@ const storeSchema = new mongoose.Schema({
   },
 });
 
-storeSchema.pre('save', async function(next) {
-  if (!this.isModified('name')) {   // if the name is not modified
-  next(); // skip it
-  return; // stop the function from running
-}
+// Define our indexes
+storeSchema.index({
+  name: 'text',
+  description: 'text',
+});
+
+storeSchema.pre('save', async function (next) {
+  if (!this.isModified('name')) { // if the name is not modified
+    next(); // skip it
+    return; // stop the function from running
+  }
   this.slug = slug(this.name);
 
   // find other stores that have a slug of wes, wes-1, wes-2
   const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
   const storesWithSlug = await this.constructor.find({ slug: slugRegEx });
-  if(storesWithSlug.length) {
+  if (storesWithSlug.length) {
     this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
   }
 
@@ -59,12 +66,12 @@ storeSchema.pre('save', async function(next) {
 });
 
 
-storeSchema.statics.getTagsList = function() {
+storeSchema.statics.getTagsList = function () {
   return this.aggregate([ // aggregate takes a pipeline of operators
     { $unwind: '$tags' }, // identify each tag
     { $group: { _id: '$tags', count: { $sum: 1 } } }, // group same tags together and count the instances
-    { $sort: { count: -1 } }  // sort by most popular (descending order)
+    { $sort: { count: -1 } }, // sort by most popular (descending order)
   ]);
-}
+};
 
 module.exports = mongoose.model('Store', storeSchema);
